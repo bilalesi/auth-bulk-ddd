@@ -2,7 +2,7 @@ import ValueObject from '../../../core/ValueObject';
 import Result from '../../../core/Result';
 import Checker from '../../../core/Checker';
 
-interface IUserName{
+export interface IUserName{
     name: string
 }
 
@@ -24,7 +24,9 @@ class UserName extends ValueObject<IUserName>{
         if(!isMinLength.valid)
             return Result.opFail<UserName>(isMinLength.msg);
         
-        return Result.opSuccess<UserName>(new UserName({ name: username }))
+        return Result.opSuccess<UserName>(new UserName({
+            name: username
+        }))
     }
 }
 

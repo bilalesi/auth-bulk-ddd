@@ -20,6 +20,13 @@ class Checker{
             msg: 'Username is correct'
         }
     }
+    public static NotNullOrUndefinedBulk(values: any[]): ICheckerValidateSchema{
+        values.forEach(value => {
+            const result = this.NotNullOrUndefined(value);
+            if(result.valid) return result;
+        });
+        return { valid: true};
+    }
 
     public static GreaterThan(inValue: number | string, threeshold: number): ICheckerValidateSchema{
         let valueTested = typeof inValue === 'number' ? inValue : typeof inValue === 'string' ? inValue.length : null

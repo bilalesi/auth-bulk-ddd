@@ -1,7 +1,7 @@
 import ValueObject from './../../../core/ValueObject';
 import Result from '../../../core/Result';
 
-interface IUserEmail{
+export interface IUserEmail{
     value: string
 }
 

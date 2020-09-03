@@ -21,7 +21,7 @@ export default class Result<T> implements IResult<T>{
     public isSuccess: boolean;
     public isFailure: boolean;
     public _error: T | string;
-    public _value: T | string;
+    private _value: T | string;
 
     constructor(success: boolean, error?: T | string, value?: T | string) {
         if(success && error)
