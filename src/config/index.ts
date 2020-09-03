@@ -3,6 +3,7 @@ import { mergeAll } from "ramda";
 import { existsSync } from "fs";
 import { join } from "path";
 import Result, { IResult } from '../core/Result';
+import { IDatabase } from "./databases";
 
 
 export interface IEnvirementData{
@@ -15,25 +16,26 @@ const envirementConfig: object = require(join(__dirname, 'envirements', ENV)).de
 export abstract class ConfigurationLoader{
     constructor(){}
 
-    public static loadDbConfiguration(): IResult<IEnvirementData | string>{ 
-        if(existsSync(join(__dirname, 'databases', ENV)))
-            return Result.opSuccess<IEnvirementData>(require('./databases')[ENV]);
-
-        return Result.opFail<string>('Database configuration not Found');                
+    public static loadDbConfiguration(): Result<IDatabase>{ 
+        if(!existsSync(join(__dirname, 'databases')))
+        {
+            return Result.opFail<IDatabase>('Database configuration not Found');
+        }                
+        return Result.opSuccess<IDatabase>(require(`${join(__dirname, 'databases')}/${ENV}`));
     }
 
-    public static getConfig(): IResult<IEnvirementData|string>  { 
-        // const dbConfigOrError = this.loadDbConfiguration();
-        // if(!dbConfigOrError.isSuccess)
-        // return Result.opFail<string | IEnvirementData>(dbConfigOrError.getErrorValue());
+    public static getConfig(): Result<IEnvirementData>  { 
+        const dbConfigOrError = this.loadDbConfiguration();
+        if(!dbConfigOrError.isSuccess)
+            return Result.opFail<IDatabase>(dbConfigOrError.getErrorValue());
         const config: IEnvirementData = mergeAll(
             [
                 { env: ENV },
-                // dbConfigOrError.getValue() as object,
-                envirementConfig
+                envirementConfig,
+                dbConfigOrError.getValue() as IDatabase,
             ]
         );
-        // console.log('config: ', typeof config)
+        console.log('config: ',  JSON.stringify(config, null, 4))
         return Result.opSuccess<IEnvirementData>(config);
     }
 }

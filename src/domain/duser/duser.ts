@@ -88,3 +88,5 @@ class User extends Entity<IUser>{
         return Result.opSuccess<User>(user);
     }
 }
+
+export default User;

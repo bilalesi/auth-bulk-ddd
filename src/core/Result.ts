@@ -5,13 +5,11 @@
  * and the error if fail, or the data(value) if success;
  */
 
-import debug from 'debug';
 
 export interface IResult<T>{
     isSuccess: boolean,
     isFailure: boolean,
     _error: T | string,
-    _value: T | string,
 
     getValue: () => T,
     getErrorValue: () => T | string,
@@ -49,7 +47,7 @@ export default class Result<T> implements IResult<T>{
         if(this.isFailure){
             console.log('error result: ', this._error);
             // debug('debugging error: ', this._error);
-            throw new Error('[@BadUseFunction] to get the error use getErrorValue');
+            // throw new Error('[@BadUseFunction] to get the error use getErrorValue');
         }
         return this._value as T;
     }
