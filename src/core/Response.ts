@@ -5,7 +5,7 @@
  */
 import { assoc } from "ramda";
 import { injectable, inject } from 'inversify'
-import ConfigurationLoader, { IEnvirementData } from './../config';
+import { IEnvirementData } from './../config';
 
 
 export interface ISuccessResponse{

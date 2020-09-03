@@ -5,7 +5,13 @@ export interface IEntity<T>{
     getEntityProps: () => T
 }
 
-class Entity<T> implements IEntity<T>{
+/**
+ * @desc the Entity class represent any entity of the domain
+ * which will compared by the _id as describe DDD.
+ */
+
+ 
+abstract class Entity<T> implements IEntity<T>{
     protected readonly _id: Identity;
     private readonly props: T;
 

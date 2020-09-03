@@ -7,21 +7,25 @@ import compression from "compression";
 import morgan from "morgan";
 import { AddressInfo } from 'net'
 import { IEnvirementData } from './config/index';
-import container from './ioc_container';
-
-require('dotenv').config();
+import { Logger } from 'winston';
 
 class AppStarter{
-	public config: IEnvirementData;
-	async app_starter (){
+	private config: IEnvirementData;
+	private logger;
+	constructor({ configuration, getLogger }){
+		this.config = configuration;
+		this.logger = getLogger.logger();	
+	}
+	public app_starter (){
 		const app = express();
-		const { Configuration }  = container.cradle;
-		try {
-			const configOrerror = await Configuration.getConfig();						
-			this.config =  configOrerror.getValue() as IEnvirementData ;			
-		} catch(err){
-			console.log('[@ConfigurationError] configuration not loaded correctly', err);
-		}
+		// const { Configuration, AppLogger }  = container.cradle;
+		
+		// const configOrerror = Configuration.getConfig();
+		// if(!configOrerror.isSuccess)						
+		// 	console.log('[@ConfigurationError] configuration not loaded correctly');
+		
+		// this.config =  configOrerror.getValue() as IEnvirementData;
+
 		if (this.config.env === 'development')
 			app.use(monitor());
 	
@@ -32,7 +36,15 @@ class AppStarter{
 		app.use(helmet());
 		app.use(compression());
 		app.use(morgan('combined'));
-		
+		app.get('/', (req, res, next) =>{
+			this.logger.log({
+				level: 'info',
+				message: 'good working'
+			});
+			res.json({
+				'cool': 'hello world'
+			})
+		})
 		const serverPort = this.config.serverPort;
 
 		return({
