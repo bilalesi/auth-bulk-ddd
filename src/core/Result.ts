@@ -41,7 +41,7 @@ export default class Result<T> implements IResult<T>{
         return new Result<U>(true, null, value)
     }
 
-    public static opFail<U>(error?: U): Result<U> {
+    public static opFail<U>(error?: U | string): Result<U> {
         return new Result(false, error);
     }
 

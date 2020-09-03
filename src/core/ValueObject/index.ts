@@ -14,8 +14,9 @@ abstract class ValueObject<T extends IValueObject>{
 
     equals(vo?: T){
         if(vo === null || vo === undefined)
-            return false
-        
+            return false;
+        if(vo.props === undefined)
+            return false;
         return shallowequal(vo, this.props)
     }
 }

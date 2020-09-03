@@ -1,4 +1,4 @@
-import Identity from './../../core/Identity';
+import Identity from '../Identity';
 
 export interface IEntity<T>{
     equals: (object?: Entity<T>) => boolean,

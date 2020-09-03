@@ -11,7 +11,7 @@ import { Logger } from 'winston';
 
 class AppStarter{
 	private config: IEnvirementData;
-	private logger;
+	private logger: Logger;
 	constructor({ configuration, getLogger }){
 		this.config = configuration;
 		this.logger = getLogger.logger();	
@@ -35,10 +35,11 @@ class AppStarter{
 		app.use(bodyParser.urlencoded({ extended: true}));
 		app.use(helmet());
 		app.use(compression());
-		app.use(morgan('combined'));
+		app.use(morgan('combined',{ stream: {
+			write: (message) => { this.logger.info(message)}
+		}}));
 		app.get('/', (req, res, next) =>{
-			this.logger.log({
-				level: 'info',
+			this.logger.error({
 				message: 'good working'
 			});
 			res.json({
