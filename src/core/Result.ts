@@ -13,7 +13,7 @@ export interface IResult<T>{
     _error: T | string,
     _value: T | string,
 
-    getValue: () => T | string,
+    getValue: () => T,
     getErrorValue: () => T | string,
 }
 
@@ -45,16 +45,16 @@ export default class Result<T> implements IResult<T>{
         return new Result(false, error);
     }
 
-    public getValue() : T | string {
+    public getValue() : T {
         if(this.isFailure){
-            console.log('error resulr: ', this._error);
-            debug('debugging error: ', this._error);
+            console.log('error result: ', this._error);
+            // debug('debugging error: ', this._error);
             throw new Error('[@BadUseFunction] to get the error use getErrorValue');
         }
         return this._value as T;
     }
 
     public getErrorValue() : T | string{
-        return this._error as T;
+        return this._error;
     }
 }
