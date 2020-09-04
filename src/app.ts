@@ -46,11 +46,14 @@ class AppStarter{
 		this.dbify.MongoConnect();
 		app.get('/', async (req, res, next) =>{
 			let user = new User({
-				firstname: 'bilal'
-			})
+					firstname: 'bilal'
+				})
 			try {
-				await user.save();
-				console.log('user, ', user)				
+				// let gh = await User.findById('5f51f432ba088b39ad3a553c')
+				// console.log('+++++ gh', gh)
+				// let user1 = await User.findByIdAndUpdate('5f51f432ba088b39ad3a553c', { 'firstname' : "hello"}, { upsert: true})
+				let user1 = user.save()
+				console.log('user, ', user1)
 			} catch (error) {
 				console.log('----- error', error)
 			}

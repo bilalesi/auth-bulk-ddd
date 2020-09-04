@@ -37,7 +37,7 @@ class User extends Entity<IUser>{
     }
 
     get userId(): UserID{
-        return UserID.create(this._id).getValue();
+        return UserID.build(this._id).getValue();
     }
     get username(): UserName{
         return this.props.username;
@@ -50,6 +50,9 @@ class User extends Entity<IUser>{
     }
     get address(): UserAddress{
         return this.props.address;
+    }
+    get phone(): UserPhone{
+        return this.props.phone;
     }
     get password(): UserPassword{
         return this.props.password;
@@ -67,7 +70,7 @@ class User extends Entity<IUser>{
         return this.props.role;
     }
     
-    public static create(props: IUser, id?: Identity): Result<User>{
+    public static build(props: IUser, id?: Identity): Result<User>{
         const isNotNullOrUndefined = Checker.NotNullOrUndefinedBulk([
             props.username.value,
             props.email.value,

@@ -21,11 +21,11 @@ class UserAddress extends ValueObject<IUserAddress>{
         return { ...{ ...props }};
     }
     private static isValidAdderss(props: IUserAddress): boolean{
-        const isStateNotNullOrUndefined = Checker.NotNullOrUndefined(state)
+        const isStateNotNullOrUndefined = Checker.NotNullOrUndefined(props.state)
         return isStateNotNullOrUndefined.valid
     }   
 
-    public static create(props: IUserAddress): Result<UserAddress>{
+    public static build(props: IUserAddress): Result<UserAddress>{
         if(this.isValidAdderss(props))
             return Result.opFail<UserAddress>('[@Address] State must be included in the address');
 

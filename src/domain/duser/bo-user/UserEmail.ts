@@ -20,7 +20,7 @@ class UserEmail extends ValueObject<IUserEmail>{
         return email.trim().toLowerCase();
     }
 
-    public static create(props: IUserEmail): Result<UserEmail>{
+    public static build(props: IUserEmail): Result<UserEmail>{
         if(!this.isValid(props.value))
             return Result.opFail<UserEmail>('User email not correct');
         else{

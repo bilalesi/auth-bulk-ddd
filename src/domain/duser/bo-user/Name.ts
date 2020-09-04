@@ -21,7 +21,7 @@ class Name extends ValueObject<IName>{
         return isNotNullOrUndefined.valid;
     }
 
-    public static create(props: IName): Result<Name>{
+    public static build(props: IName): Result<Name>{
         if(!this.isValidName(props.name))
             return Result.opFail<Name>('[@Name] Name not Valid')
 

@@ -12,4 +12,9 @@ interface IUserRepository{
     
     getUserById(userId: UserID | string): Promise<User>;
     getUserByUsername(username: UserName | string): Promise<User>;
+
+    save(user: User): Promise<void>;
 }
+
+
+export default IUserRepository

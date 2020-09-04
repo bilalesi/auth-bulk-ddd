@@ -10,17 +10,17 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
     //         }
     //     }
     // },
-    // username: {
-    //     type: String,
-    //     validate:{
-    //         validator: async (username) => {
-    //             return await yup.string().min(2).max(25).required().isValid(username)
-    //         },
-    //         message: (props) => `${props.value} must be unique and at least ${2} an less than ${25}`
-    //     }, 
-    //     required: [true, " username required"],
-    //     unique: true,
-    // },
+    username: {
+        type: String,
+        validate:{
+            validator: async (username) => {
+                return await yup.string().min(2).max(25).required().isValid(username)
+            },
+            message: (props) => `${props.value} must be unique and at least ${2} an less than ${25}`
+        }, 
+        required: [true, " username required"],
+        unique: true,
+    },
     firstname: { type: String, },
     lastname: { type: String },
     address: {
@@ -38,6 +38,14 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
         }
     },
     password: { type: String, required: true },
+    phone: { type: String,
+        validate: {
+            validator: async (value) => {
+                return await yup.string().matches(/^(00213|\+213|0)(5|6|7)[0-9]{8}$/, { excludeEmptyString: true}).min(9).max(14).isValid(value);
+            },
+            message: (props) => `${props.value} not recognize as Algeria phone number or is to short`
+        }
+    },
     isEmailVerified: { type: Boolean, default: false },    
     lastLogin: {
         type: Date,

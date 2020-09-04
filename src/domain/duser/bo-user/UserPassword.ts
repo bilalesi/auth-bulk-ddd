@@ -74,7 +74,7 @@ class UserPassword extends ValueObject<IUserPassword>{
     /**
      * @method create user passowrd after meeting cretaria
      */
-    public static create(props: IUserPassword): Result<UserPassword>{
+    public static build(props: IUserPassword): Result<UserPassword>{
         const { value, hashed } = props;
         const testResult = this.isLegalPassword(props);
         if(!testResult.isSuccess)

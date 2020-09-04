@@ -26,6 +26,7 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             firstname : user.firsName.Name,
             lastname : user.lastName.Name,
             address : user.address.value,
+            phone: user.phone.value,
             password : password,
             isEmailVerified : user.isEmailVerified,
             lastLogin : user.lastLogin.toDate(),
@@ -36,13 +37,13 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
 
     }
     public static toDomain(raw: any): User{
-        const usernameOrError = UserName.create({ name : raw.username});
-        const passwordOrError = UserPassword.create({ value: raw.password, hashed: true});
-        const firstnameOrError = Name.create({ name : raw.firstname });
-        const lastnameOrError = Name.create({ name : raw.lastname });
-        const emailOrName = UserEmail.create({ value: raw.email});
-        const phoneOrError = UserPhone.create({ value: raw.phone});
-        const addressOrError = UserAddress.create({ ...raw.address});
+        const usernameOrError = UserName.build({ name : raw.username});
+        const passwordOrError = UserPassword.build({ value: raw.password, hashed: true});
+        const firstnameOrError = Name.build({ name : raw.firstname });
+        const lastnameOrError = Name.build({ name : raw.lastname });
+        const emailOrName = UserEmail.build({ value: raw.email});
+        const phoneOrError = UserPhone.build({ value: raw.phone});
+        const addressOrError = UserAddress.build({ ...raw.address});
         const roleOrError = !!raw.role === true ? raw.role : Role.USER;
 
         let resultTest: Result<any> = Result.resultCombine([
@@ -54,7 +55,7 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             addressOrError,
             passwordOrError
         ])
-        const userOrError = resultTest.isSuccess && User.create({
+        const userOrError = resultTest.isSuccess && User.build({
             username: usernameOrError.getValue(),
             firstName: firstnameOrError.getValue(),
             lastName: lastnameOrError.getValue(),
@@ -70,3 +71,5 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
         return userOrError.isSuccess ? userOrError.getValue() : null
     }
 }
+
+export default UserMap;

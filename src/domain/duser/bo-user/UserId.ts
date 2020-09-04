@@ -12,7 +12,7 @@ export default class UserID extends Entity<any>{
         return this._id;
     }
 
-    public static create(id?: Identity): Result<UserID>{
+    public static build(id?: Identity): Result<UserID>{
         return Result.opSuccess<UserID>(new UserID(id))
     }
 }

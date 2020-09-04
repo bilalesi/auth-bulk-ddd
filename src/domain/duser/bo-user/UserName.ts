@@ -15,7 +15,7 @@ class UserName extends ValueObject<IUserName>{
         return this.props.name;
     }
 
-    public static create(props: IUserName): Result<UserName>{
+    public static build(props: IUserName): Result<UserName>{
         const isNotNullOrUndefined = Checker.NotNullOrUndefined(props.name);
         if(!isNotNullOrUndefined.valid)
             return Result.opFail<UserName>(isNotNullOrUndefined.msg)

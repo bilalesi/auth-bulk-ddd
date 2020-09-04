@@ -40,6 +40,8 @@ class InitiateDB{
         });
         mongoose.connect(`mongodb://${host}:${port}/${database}`, {
             useNewUrlParser: true,
+            useFindAndModify: false,
+            useUnifiedTopology: true,
             poolSize: 5
         });
     }
