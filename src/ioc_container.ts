@@ -6,11 +6,13 @@ import Response, { IResponse } from './core/Response';
 import Result, { IResult } from './core/Result';
 import UseCaseError, { IUseCaseError } from "./core/UseCaseError";
 import getLogger from './infrastructure/logging';
+import InitiateDB from './config/databases';
 import App from './app';
 
-interface ICradle{
+interface ICradle{    
     configuration: IEnvirementData,
     getLogger: object,
+    InitiateDb: InitiateDB,
     App: App,
     Response: Response,
     Result: Result<any>,
@@ -25,6 +27,7 @@ const IocContainer = createContainer<ICradle>({
 IocContainer.register({
     configuration: asValue(configuration),
     getLogger: asFunction(getLogger).singleton(),
+    InitiateDb: asClass(InitiateDB).singleton(),
     App: asClass(App).singleton(),
     Response: asClass(Response).singleton(),
     Result: asClass(Result).singleton(),

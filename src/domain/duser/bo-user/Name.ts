@@ -16,17 +16,17 @@ class Name extends ValueObject<IName>{
         return this.props.name;
     }
 
-    private isValidName(name: string): boolean{
+    private static isValidName(name: string): boolean{
         const isNotNullOrUndefined = Checker.NotNullOrUndefined(name);
         return isNotNullOrUndefined.valid;
     }
 
-    public create(name: string): Result<Name>{
-        if(!this.isValidName(name))
+    public static create(props: IName): Result<Name>{
+        if(!this.isValidName(props.name))
             return Result.opFail<Name>('[@Name] Name not Valid')
 
         return Result.opSuccess<Name>(new Name({
-            name: name
+            name: props.name
         }))
     }
 }

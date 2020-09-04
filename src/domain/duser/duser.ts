@@ -11,9 +11,9 @@ import UserAddress from './bo-user/UserAddress';
 import Result from '../../core/Result';
 import Checker from './../../core/Checker';
 
-enum Role {
-    ADMIN,
-    USER,
+export enum Role {
+    ADMIN = 'ADMIN',
+    USER = 'USER',
 }
 interface IUser{
     username: UserName,
@@ -24,10 +24,10 @@ interface IUser{
     address: UserAddress,
     password: UserPassword,
     isEmailVerified?: boolean,
-    createdAt: Moment,
-    modifiedAt: Moment,
-    lastLogin: Moment,
-    role: Role
+    createdAt?: Moment,
+    modifiedAt?: Moment,
+    lastLogin?: Moment,
+    role?: Role
 }
 
 
@@ -69,9 +69,10 @@ class User extends Entity<IUser>{
     
     public static create(props: IUser, id?: Identity): Result<User>{
         const isNotNullOrUndefined = Checker.NotNullOrUndefinedBulk([
-            props.username,
-            props.email,
-            props.address
+            props.username.value,
+            props.email.value,
+            props.phone.value,
+            props.address.value
         ])
         if(!isNotNullOrUndefined.valid)
             return Result.opFail<User>('[@UserCreation] user cannot be created (null or undefined)');

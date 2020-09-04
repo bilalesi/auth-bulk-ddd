@@ -9,7 +9,7 @@ class UserEmail extends ValueObject<IUserEmail>{
     constructor(props: IUserEmail){
         super(props)
     }
-    get email(){
+    get value(){
         return this.props.value
     }
     public static isValid(email: string): boolean{
@@ -20,11 +20,11 @@ class UserEmail extends ValueObject<IUserEmail>{
         return email.trim().toLowerCase();
     }
 
-    public static create(email: string): Result<UserEmail>{
-        if(!this.isValid(email))
+    public static create(props: IUserEmail): Result<UserEmail>{
+        if(!this.isValid(props.value))
             return Result.opFail<UserEmail>('User email not correct');
         else{
-            return Result.opSuccess<UserEmail>(new UserEmail({ value: this.format(email)}))
+            return Result.opSuccess<UserEmail>(new UserEmail({ value: this.format(props.value)}))
         }
     }
 }

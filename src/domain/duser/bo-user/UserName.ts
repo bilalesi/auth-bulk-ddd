@@ -11,21 +11,21 @@ class UserName extends ValueObject<IUserName>{
         super(props);
     }
 
-    get username(){
+    get value(){
         return this.props.name;
     }
 
-    public static create(username: string): Result<UserName>{
-        const isNotNullOrUndefined = Checker.NotNullOrUndefined(username);
+    public static create(props: IUserName): Result<UserName>{
+        const isNotNullOrUndefined = Checker.NotNullOrUndefined(props.name);
         if(!isNotNullOrUndefined.valid)
             return Result.opFail<UserName>(isNotNullOrUndefined.msg)
         
-        const isMinLength = Checker.GreaterThan(username, 5);
+        const isMinLength = Checker.GreaterThan(props.name, 5);
         if(!isMinLength.valid)
             return Result.opFail<UserName>(isMinLength.msg);
         
         return Result.opSuccess<UserName>(new UserName({
-            name: username
+            name: props.name
         }))
     }
 }

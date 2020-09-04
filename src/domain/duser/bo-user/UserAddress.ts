@@ -6,7 +6,7 @@ import { is } from 'ramda';
 
 
 interface IUserAddress{
-    localAddress?: string,
+    local?: string,
     state: string,
     city?: string,
     zip?: number
@@ -16,22 +16,20 @@ class UserAddress extends ValueObject<IUserAddress>{
     constructor(props: IUserAddress){
         super(props);
     }
-
-    private static isValidAdderss(state: string, city?: string, zip?: number, local?: string): boolean{
+    get value(){
+        let props = this.props
+        return { ...{ ...props }};
+    }
+    private static isValidAdderss(props: IUserAddress): boolean{
         const isStateNotNullOrUndefined = Checker.NotNullOrUndefined(state)
         return isStateNotNullOrUndefined.valid
     }   
 
-    public static create(state: string, city?: string, zip?: number, local?: string): Result<UserAddress>{
-        if(this.isValidAdderss(state, city, zip, local))
+    public static create(props: IUserAddress): Result<UserAddress>{
+        if(this.isValidAdderss(props))
             return Result.opFail<UserAddress>('[@Address] State must be included in the address');
 
-        return Result.opSuccess<UserAddress>(new UserAddress({
-            city,
-            state,
-            zip,
-            localAddress: local
-        }))
+        return Result.opSuccess<UserAddress>(new UserAddress(props))
     }
 }
 

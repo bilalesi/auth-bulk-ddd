@@ -43,6 +43,14 @@ export default class Result<T> implements IResult<T>{
         return new Result(false, error);
     }
 
+    public static resultCombine(values: Result<any>[]): Result<any>{
+        for(let value of values ){
+            if(!value.isSuccess)
+                return value;
+            return Result.opSuccess();
+        }
+    }
+
     public getValue() : T {
         if(this.isFailure){
             console.log('error result: ', this._error);

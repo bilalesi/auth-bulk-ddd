@@ -18,7 +18,7 @@ class UserPassword extends ValueObject<IUserPassword>{
         super(props);
     }
 
-    get password(){
+    get value(){
         return this.props.value
     }
     private static isLegalPassword(props: IUserPassword): Result<UserPassword>{
@@ -50,7 +50,7 @@ class UserPassword extends ValueObject<IUserPassword>{
             })            
         })        
     }
-    private getHashedValue(): Promise<string>{
+    public getHashedValue(): Promise<string>{
         return new Promise((resolve, reject) => {
             if(this.isAlreadyHashed())
                 resolve(this.props.value);
@@ -59,7 +59,7 @@ class UserPassword extends ValueObject<IUserPassword>{
             }        
         })
     }    
-    private isAlreadyHashed(): boolean{
+    public isAlreadyHashed(): boolean{
         return this.props.hashed;
     }
     private comparePassword(value: string): Promise<boolean>{

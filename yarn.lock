@@ -328,6 +328,11 @@
   dependencies:
     winston "*"
 
+"@types/yup@^0.29.6":
+  version "0.29.6"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.29.6.tgz#0920303c0298ac53945e9feb0b4dcad79cc755b2"
+  integrity sha512-YPDo5L5uHyxQ4UkyJST+33stD8Z6IT9fvmKyaPAGxkZ6q19foEi6sQGkmqBvzSyRPdstFEeJiS2rKuTn8rfO5g==
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -2583,6 +2588,13 @@ passport-jwt@^4.0.0:
   dependencies:
     jsonwebtoken "^8.2.0"
     passport-strategy "^1.0.0"
+
+passport-local@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-local/-/passport-local-1.0.0.tgz#1fe63268c92e75606626437e3b906662c15ba6ee"
+  integrity sha1-H+YyaMkudWBmJkN+O5BmYsFbpu4=
+  dependencies:
+    passport-strategy "1.x.x"
 
 passport-oauth1@1.x.x:
   version "1.1.0"

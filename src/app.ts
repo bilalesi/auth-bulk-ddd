@@ -8,13 +8,18 @@ import morgan from "morgan";
 import { AddressInfo } from 'net'
 import { IEnvirementData } from './config/index';
 import { Logger } from 'winston';
+import InitiateDB from './config/databases';
+import mongoose from 'mongoose'
+import User from "./infrastructure/database/mongodb/UserModel";
 
 class AppStarter{
 	private config: IEnvirementData;
 	private logger: Logger;
-	constructor({ configuration, getLogger }){
+	private dbify: InitiateDB;
+	constructor({ configuration, getLogger, InitiateDb }){
 		this.config = configuration;
 		this.logger = getLogger.logger();	
+		this.dbify = InitiateDb;
 	}
 	public app_starter (){
 		const app = express();
@@ -38,7 +43,17 @@ class AppStarter{
 		app.use(morgan('combined',{ stream: {
 			write: (message) => { this.logger.info(message)}
 		}}));
-		app.get('/', (req, res, next) =>{
+		this.dbify.MongoConnect();
+		app.get('/', async (req, res, next) =>{
+			let user = new User({
+				firstname: 'bilal'
+			})
+			try {
+				await user.save();
+				console.log('user, ', user)				
+			} catch (error) {
+				console.log('----- error', error)
+			}
 			this.logger.error({
 				message: 'good working'
 			});
@@ -47,7 +62,15 @@ class AppStarter{
 			})
 		})
 		const serverPort = this.config.serverPort;
-
+		process.on('SIGINT', () => {
+			mongoose.connection.close(() => {				
+				process.exit(0)
+			})
+		}).on('SIGTERM', () => {
+			mongoose.connection.close(() => {				
+				process.exit(0)
+			})
+		})
 		return({
 			app, 
 			start: () =>  new Promise(resolve  => {				

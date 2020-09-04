@@ -2,7 +2,7 @@ import ValueObject from './../../../core/ValueObject';
 import Result from '../../../core/Result';
 
 export interface IUserPhone{
-    phone: string
+    value: string
 }
 
 class UserPhone extends ValueObject<IUserPhone>{
@@ -10,20 +10,20 @@ class UserPhone extends ValueObject<IUserPhone>{
         super(props);
     }
 
-    get phone(){
-        return this.props.phone;
+    get value(){
+        return this.props.value;
     }
 
-    private isValidPhone(phone: string): boolean{
+    private static isValidPhone(phone: string): boolean{
         let rPhone = /^(00213|\+213|0)(5|6|7)[0-9]{8}$/;
         return  rPhone.test(phone)
     }
 
-    public create(phone: string): Result<UserPhone>{
-        if(this.isValidPhone(phone))
+    public static create(props: IUserPhone): Result<UserPhone>{
+        if(this.isValidPhone(props.value))
             return Result.opFail<UserPhone>('[@Phone] User phone not valid');
         return Result.opSuccess<UserPhone>(new UserPhone({
-            phone: phone
+            value: props.value
         }))
     }
 }
