@@ -99,6 +99,8 @@ dist
 
 # DynamoDB Local files
 .dynamodb/
+# rethinkdb test db
+rethinkdb-data/
 
 # TernJS port file
 .tern-port

@@ -56,6 +56,11 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@types/async@^3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@types/async/-/async-3.2.3.tgz#c56f5e0fc02f8b37196f79239cc857e789b97bb4"
+  integrity sha512-deXFjLZc1h6SOh3hicVgD+S2EAkhSBGX/vdlD4nTzCjjOFQ+bfNiXocQ21xJjFAUwqaCeyvOQMgrnbg4QEV63A==
+
 "@types/bcrypt@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-3.0.0.tgz#851489a9065a067cb7f3c9cbe4ce9bed8bba0876"
@@ -281,10 +286,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/rethinkdb@^2.3.16":
-  version "2.3.16"
-  resolved "https://registry.yarnpkg.com/@types/rethinkdb/-/rethinkdb-2.3.16.tgz#fcac2dc0ca6e39921b086526a681d8369470c788"
-  integrity sha512-eswAHpyI5+xhyYxu3NK2IrFlBjJV4/5uJl+oHZ2HV07RcJTr9cDYkwzZ22riAsO9jrIPLMSIn0752PL8sBSkUw==
+"@types/rethinkdb@2.3.6":
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/@types/rethinkdb/-/rethinkdb-2.3.6.tgz#03476b4ab8a3f9afd3da9b49150dfc3a635bf029"
+  integrity sha512-dtJ2XyHUqKLEuwuC08Ja7Hy93m+IriIKYFgrBbckRRaBKmPi3Xcqa5ENn8HgXICmKhdEQlTF8JXGSrIulY5/ng==
   dependencies:
     "@types/node" "*"
 
@@ -451,7 +456,7 @@ async-limiter@~1.0.0:
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
-async@^3.1.0:
+async@^3.1.0, async@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.0.tgz#b3a2685c5ebb641d3de02d161002c60fc9f85720"
   integrity sha512-TR2mEZFVOj2pLStYxLht7TyfuRzaydfpxr3k9RpHIzMgw7A64dzsdqCxH1WJyQdoe8T10nDXd9wnEigmiuHIZw==
@@ -555,6 +560,11 @@ bluebird@3.5.1:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
+
+bluebird@~2.10.2:
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
+  integrity sha1-AkpVFylTCIV/FPkfEQb8O1VfRGs=
 
 body-parser@1.19.0, body-parser@^1.19.0:
   version "1.19.0"
@@ -3001,14 +3011,19 @@ responselike@^1.0.2:
   dependencies:
     lowercase-keys "^1.0.0"
 
-rethinkdb@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/rethinkdb/-/rethinkdb-2.4.2.tgz#9c5d8dde3300ddacfdfae0fc8ded3754602d447a"
-  integrity sha512-6DzwqEpFc8cqesAdo07a845oBRxLiHvWzopTKBo/uY2ypGWIsJQFJk3wjRDtSEhczxJqLS0jnf37rwgzYAw8NQ==
+rethinkdb-ts@^2.4.5:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/rethinkdb-ts/-/rethinkdb-ts-2.4.5.tgz#986916d3ec21deb1be84e0376c06fe8738837833"
+  integrity sha512-Dcp6+TTyFjfSwX7Ai0JWnOr+dfAv7FrWUs/ufSGU+auapWuolwn/WjpvKYrPMpwgvgOHeJldA8IE8yTW2nYc7g==
+
+rethinkdb@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/rethinkdb/-/rethinkdb-2.3.3.tgz#3dc6586e22fa1dabee0d254e64bd0e379fad2f72"
+  integrity sha1-PcZYbiL6HavuDSVOZL0ON5+tL3I=
   dependencies:
     bluebird ">= 2.3.2 < 3"
 
-rethinkdbdash@^2.3.31:
+rethinkdbdash@^2.3.31, rethinkdbdash@~2.3.0:
   version "2.3.31"
   resolved "https://registry.yarnpkg.com/rethinkdbdash/-/rethinkdbdash-2.3.31.tgz#fe2f73d1fa6e6f5d96d8e881292013cf6dca914d"
   integrity sha512-6nXrKFjdg2Ug0YpdmPWSvyD/2EisHnFNt4FWZ74dcXGK48ievSv+cNFTmVv+KjLi6I9CCf6w4CKZ6yCYTfMfdQ==
@@ -3481,6 +3496,15 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
+thinky@^2.3.9:
+  version "2.3.9"
+  resolved "https://registry.yarnpkg.com/thinky/-/thinky-2.3.9.tgz#16f80868a65c7fb490d316ddb342308f7e290cfa"
+  integrity sha512-4zp4wIQdwqyHP9CVoOa0/AV3GnKprHfOOVRj1KigtVcWi1DT7Eut52DVfX9nyI59399S+N6e3J5+4+y64ruf/g==
+  dependencies:
+    bluebird "~2.10.2"
+    rethinkdbdash "~2.3.0"
+    validator "~3.34.0"
+
 through@2:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
@@ -3718,6 +3742,11 @@ validator@^10.11.0:
   version "10.11.0"
   resolved "https://registry.yarnpkg.com/validator/-/validator-10.11.0.tgz#003108ea6e9a9874d31ccc9e5006856ccd76b228"
   integrity sha512-X/p3UZerAIsbBfN/IwahhYaBbY68EN/UQBWHtsbXGT5bfrH/p4NQzUCG1kF/rtKaNpnJ7jAu6NGTdSNtyNIXMw==
+
+validator@~3.34.0:
+  version "3.34.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-3.34.0.tgz#67cb418121f8fbaef597d97376d61b0db5937cc6"
+  integrity sha1-Z8tBgSH4+671l9lzdtYbDbWTfMY=
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"

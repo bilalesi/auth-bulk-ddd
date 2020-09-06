@@ -1,15 +1,18 @@
 import mongoose, { Mongoose } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid'
 import * as yup from 'yup';
 
 const userSchema: mongoose.Schema = new mongoose.Schema({
-    // _id: {
-    //     type: mongoose.Types.ObjectId,
-    //     validate: {
-    //         validator: async (id) => {
-    //             return await yup.string().uuid().isValid(id);
-    //         }
-    //     }
-    // },
+    _id: {
+        // type: mongoose.Types.ObjectId,
+        type: String,
+        default: uuidv4,
+        validate: {
+            validator: async (id) => {
+                return await yup.string().uuid().isValid(id);
+            }
+        }
+    },
     username: {
         type: String,
         validate:{

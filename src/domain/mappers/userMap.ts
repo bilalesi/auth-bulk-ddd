@@ -8,6 +8,8 @@ import UserPhone from "../duser/bo-user/UserPhone";
 import UserAddress from "../duser/bo-user/UserAddress";
 import UserPassword from "../duser/bo-user/UserPassword";
 import Result from '../../core/Result';
+import UserID from '../duser/bo-user/UserId';
+import Identity from './../../core/Identity';
 
 interface UserDto{
 
@@ -45,7 +47,7 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
         const phoneOrError = UserPhone.build({ value: raw.phone});
         const addressOrError = UserAddress.build({ ...raw.address});
         const roleOrError = !!raw.role === true ? raw.role : Role.USER;
-
+        const idOreError = UserID.build(raw._id as Identity);
         let resultTest: Result<any> = Result.resultCombine([
             usernameOrError,
             firstnameOrError,
@@ -53,7 +55,8 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             emailOrName,
             phoneOrError,
             addressOrError,
-            passwordOrError
+            passwordOrError,
+            idOreError
         ])
         const userOrError = resultTest.isSuccess && User.build({
             username: usernameOrError.getValue(),
@@ -67,7 +70,8 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             modifiedAt: moment(raw.updated_at),
             password: passwordOrError.getValue(),
             role: raw.role in Role ? raw.role : 'USER'
-        })
+        }, idOreError.getValue().id);
+        
         return userOrError.isSuccess ? userOrError.getValue() : null
     }
 }

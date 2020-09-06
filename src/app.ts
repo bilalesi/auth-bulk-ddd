@@ -43,7 +43,7 @@ class AppStarter{
 		app.use(morgan('combined',{ stream: {
 			write: (message) => { this.logger.info(message)}
 		}}));
-		this.dbify.MongoConnect();
+		this.dbify.configureDbAndLoad();
 		app.get('/', async (req, res, next) =>{
 			let user = new User({
 					firstname: 'bilal'
