@@ -1,11 +1,10 @@
-import { v4 as identifierV4, } from "uuid";
-type IdentityType = string | number;
+import { v4 } from "uuid";
 
 class Identity{
-    private readonly id: IdentityType
+    private readonly id: string
 
-    constructor(value?: IdentityType){
-        this.id = value ? value : identifierV4()
+    constructor(value?: string){
+        this.id = value ? value : v4() as string
     }
 
     equals(id?: Identity): boolean{
@@ -15,10 +14,10 @@ class Identity{
         else if(!(id instanceof this.constructor))
             return false;
 
-        return id.getValue() === this.id;
+        return id.value === this.id;
     }
 
-    getValue(): IdentityType{
+    get value(): string{
         return this.id;
     }
 }

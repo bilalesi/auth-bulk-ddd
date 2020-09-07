@@ -1,5 +1,6 @@
 import { createContainer, InjectionMode, asClass, asFunction, asValue } from "awilix";
 import { Logger } from 'winston';
+import mongoose from 'mongoose';
 
 import configuration, { IEnvirementData } from "./config";
 import Response, { IResponse } from './core/Response';
@@ -11,6 +12,8 @@ import App from './app';
 import UserRepository from './domain/repository/UserRepository';
 import { CreateUserUseCase } from './domain/useCases/CreateUserUseCase/CreateUserUseCase';
 import { CreateUserController } from './domain/useCases/CreateUserUseCase/CreateUserController';
+import DeleteUserUseCase from "./domain/useCases/DeleteUserUseCase/DeleteUserUseCase";
+import DeleteUserController from './domain/useCases/DeleteUserUseCase/DeleteUserController';
 
 interface ICradle{    
     configuration: IEnvirementData,
@@ -21,7 +24,9 @@ interface ICradle{
     Result: Result<any>,
     UserRepos: UserRepository,
     CreateUserUC: CreateUserUseCase,
-    CreateUserController: CreateUserController
+    DeleteUserUC: DeleteUserUseCase,
+    CreateUserController: CreateUserController,
+    DeleteUserController: DeleteUserController
 }    
 
 const IocContainer = createContainer<ICradle>({
@@ -38,7 +43,9 @@ IocContainer.register({
     Result: asClass(Result).singleton(),
     UserRepos: asClass(UserRepository).singleton(),
     CreateUserUC: asClass(CreateUserUseCase).scoped(),
-    CreateUserController: asClass(CreateUserController).scoped()
+    DeleteUserUC: asClass(DeleteUserUseCase).scoped(),
+    CreateUserController: asClass(CreateUserController).scoped(),
+    DeleteUserController: asClass(DeleteUserController).scoped(),
 })
 
 

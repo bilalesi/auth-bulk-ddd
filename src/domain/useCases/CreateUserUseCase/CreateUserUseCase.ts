@@ -11,7 +11,7 @@ import UserEmail from '../../duser/bo-user/UserEmail';
 import UserPhone from '../../duser/bo-user/UserPhone';
 import UserPassword from '../../duser/bo-user/UserPassword';
 import Result from '../../../core/Result';
-import User from '../../duser/duser';
+import User, { Role } from '../../duser/duser';
 import UserAddress from '../../duser/bo-user/UserAddress';
 import Name from '../../duser/bo-user/Name';
 import BaseUseCase from './../../../infrastructure/useCases/BaseUserCase';
@@ -85,7 +85,8 @@ export class CreateUserUseCase implements BaseUseCase<ICreateUserDto, CreateUser
                 firstName: firstName,
                 lastName: lastName,
                 phone: userPhone,
-                address: address
+                address: address,
+                role: Role.USER
             })
 
             await this.userRepo.save(user.getValue())

@@ -36,10 +36,8 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             address : user.address.value,
             phone: user.phone.value,
             email: user.email.value,
-            password : password,
-            isEmailVerified : user.isEmailVerified,
-            lastLogin : user.lastLogin.toDate(),
-            role : user.role,
+            role: user.role,
+            password : password,         
         }
     }
     public static toDto(user: User){

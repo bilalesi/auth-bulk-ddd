@@ -33,7 +33,6 @@ export class CreateUserController extends BaseController {
         
         try {
             let result: CreateUserResponse = await this.useCase.run(dto);
-            console.log('++++++++ result: ', result);
 
             if (!result.isSuccess && result.getErrorValue() instanceof BaseUseCaseError) {
                 let gh = result.getErrorValue() as BaseUseCaseError;
@@ -50,7 +49,7 @@ export class CreateUserController extends BaseController {
                 return this.fail400(res, 400, result.getErrorValue() as string)
             }
             else {
-                return this.ok200(res);
+                return this.ok200(res, result.getValue());
             }
         } catch (error) {
             return this.fail400(res, 400, error);

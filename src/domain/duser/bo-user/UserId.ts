@@ -13,6 +13,7 @@ export default class UserID extends Entity<any>{
     }
 
     public static build(id?: Identity): Result<UserID>{
+        console.log('UserID class: ', id)
         return Result.opSuccess<UserID>(new UserID(id))
     }
 }

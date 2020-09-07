@@ -15,7 +15,7 @@ abstract class Entity<T> implements IEntity<T>{
     protected readonly _id: Identity;
     public readonly props: T;
 
-    constructor(props: T, id? : Identity){
+    constructor(props: T, id?: Identity){
         this.props = props;
         this._id = id ? id : new Identity();
     }

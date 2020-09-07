@@ -12,17 +12,20 @@ import InitiateDB from './config/databases';
 import mongoose from 'mongoose'
 import User from "./infrastructure/database/mongodb/UserModel";
 import CreateUserController from './domain/useCases/CreateUserUseCase/CreateUserController';
+import DeleteUserController from './domain/useCases/DeleteUserUseCase/DeleteUserController';
 
 class AppStarter{
 	private config: IEnvirementData;
 	private logger: Logger;
 	private dbify: InitiateDB;
-	private cus: CreateUserController;
-	constructor({ configuration, getLogger, InitiateDb, CreateUserController }){
+	private cuc: CreateUserController;
+	private duc: DeleteUserController;
+	constructor({ configuration, getLogger, InitiateDb, CreateUserController, DeleteUserController }){
 		this.config = configuration;
 		this.logger = getLogger.logger();	
 		this.dbify = InitiateDb;
-		this.cus = CreateUserController;
+		this.cuc = CreateUserController;
+		this.duc = DeleteUserController;
 	}
 	public app_starter (){
 		const app = express();
@@ -47,29 +50,13 @@ class AppStarter{
 			write: (message) => { this.logger.info(message)}
 		}}));
 		this.dbify.configureDbAndLoad();
-		app.post('/post', (req, res) => this.cus.lunch(req, res))
-			// async (req, res, next) =>{
-			// 	let user = new User({
-			// 			firstname: 'bilal'
-			// 		})
-			// 	try {
-			// 		// let gh = await User.findById('5f51f432ba088b39ad3a553c')
-			// 		// console.log('+++++ gh', gh)
-			// 		// let user1 = await User.findByIdAndUpdate('5f51f432ba088b39ad3a553c', { 'firstname' : "hello"}, { upsert: true})
-			// 		let user1 = user.save()
-			// 		console.log('user, ', user1)
-			// 	} catch (error) {
-			// 		console.log('----- error', error)
-			// 	}
-			// 	this.logger.error({
-			// 		message: 'good working'
-			// 	});
-			// 	res.json({
-			// 		'cool': 'hello world'
-			// 	})
-			// }
-		// )
+		app.post('/post', async (req, res) => this.cuc.lunch(req, res))
+		app.delete('/delete', async (req, res) => this.duc.lunch(req, res))
+
+
 		const serverPort = this.config.serverPort;
+
+
 		process.on('SIGINT', () => {
 			mongoose.connection.close(() => {				
 				process.exit(0)

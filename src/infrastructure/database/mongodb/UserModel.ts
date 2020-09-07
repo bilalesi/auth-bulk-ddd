@@ -2,7 +2,7 @@ import mongoose, { Mongoose } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid'
 import * as yup from 'yup';
 
-const userSchema: mongoose.Schema = new mongoose.Schema({
+export const userSchema: mongoose.Schema = new mongoose.Schema({
     _id: {
         // type: mongoose.Types.ObjectId,
         type: String,

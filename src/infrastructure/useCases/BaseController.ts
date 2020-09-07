@@ -15,9 +15,7 @@ export abstract class BaseController{
     }
 
     public ResponseAsJSON<T>(res: express.Response, code: number, body: T){
-        return res.status(code).json({
-            ...body
-        });
+        return res.status(code).json(body);
     }
 
     public ok200<T>(res: express.Response, dto?: T){
@@ -28,7 +26,7 @@ export abstract class BaseController{
         return res.sendStatus(200);
     }
 
-    public fail400(res: express.Response, code: number, message?: string){
+    public fail400(res: express.Response, code: number, message?: string | object){
         return res.status(code).json({
             message
         })
