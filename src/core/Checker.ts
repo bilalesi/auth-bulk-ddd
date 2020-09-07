@@ -13,11 +13,11 @@ class Checker{
         if(value === null || value === undefined)
             return {
                 valid: false,
-                msg: 'Username is Null or Undefined'
+                msg: `${value} is Null or Undefined`
             }
         return{
             valid: true,
-            msg: 'Username is correct'
+            msg: `${value} is Correct`
         }
     }
     public static NotNullOrUndefinedBulk(values: any[]): ICheckerValidateSchema{
@@ -30,7 +30,7 @@ class Checker{
 
     public static GreaterThan(inValue: number | string, threeshold: number): ICheckerValidateSchema{
         let valueTested = typeof inValue === 'number' ? inValue : typeof inValue === 'string' ? inValue.length : null
-        if( valueTested === null || !(inValue > threeshold) ){
+        if( valueTested === null || !(valueTested > threeshold) ){
             return {
                 valid: false,
                 msg: `${inValue} is not greater than ${threeshold}`
@@ -74,9 +74,15 @@ class Checker{
             }
         }
     }
-
-    public static IsAlphanumeric(value: string): ICheckerValidateSchema{
-        let alp = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/;
+    /**
+     * @description  This expression tests negatively for all number cases, 
+     * then all letter cases, and lastly tests for only alphanumeric characters in the required range.
+     * In other words: the match must be alphanumeric with at least one number, 
+     * one letter, and be between 6-15 character in length.
+     * @param value 
+     */
+    public static IsAlphanumeric(value: string): ICheckerValidateSchema{        
+        let alp = /(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{6,15})$/;
         if(!alp.test(value)){
             return {
                 valid: false,

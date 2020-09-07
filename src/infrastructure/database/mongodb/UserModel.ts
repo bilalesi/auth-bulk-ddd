@@ -10,7 +10,8 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
         validate: {
             validator: async (id) => {
                 return await yup.string().uuid().isValid(id);
-            }
+            },
+            message: (props) => `${props.value} _Id not valid`
         }
     },
     username: {
@@ -26,6 +27,15 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
     },
     firstname: { type: String, },
     lastname: { type: String },
+    email: {
+        type: String,
+        validate:{
+            validator: async (value) => {
+                return await yup.string().email().isValid(value)
+            },
+            message: (props) => `${props.value} email not valid`
+        }
+    },
     address: {
         type: Object,
         validate: {

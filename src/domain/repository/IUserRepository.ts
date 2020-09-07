@@ -9,10 +9,8 @@ interface IUserRepository{
     existsWithPhone(userPhone: UserPhone): Promise<boolean>;
     existsWithId(userId: UserID): Promise<boolean>;
     existsWithUsername(username: UserName): Promise<boolean>;
-    
     getUserById(userId: UserID | string): Promise<User>;
     getUserByUsername(username: UserName | string): Promise<User>;
-
     save(user: User): Promise<void>;
 }
 

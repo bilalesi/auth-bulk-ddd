@@ -4,7 +4,7 @@
  * the return object is the result state (success or fail)
  * and the error if fail, or the data(value) if success;
  */
-
+import debug from 'debug';
 
 export interface IResult<T>{
     isSuccess: boolean,
@@ -44,7 +44,9 @@ export default class Result<T> implements IResult<T>{
     }
 
     public static resultCombine(values: Result<any>[]): Result<any>{
-        for(let value of values ){
+        for(let value of values){
+            if(value === null)
+                continue;
             if(!value.isSuccess)
                 return value;
             return Result.opSuccess();
@@ -53,9 +55,9 @@ export default class Result<T> implements IResult<T>{
 
     public getValue() : T {
         if(this.isFailure){
-            console.log('error result: ', this._error);
-            // debug('debugging error: ', this._error);
-            // throw new Error('[@BadUseFunction] to get the error use getErrorValue');
+            console.log('[@Result] getValue func: ', this._error);
+            debug('debugging error: ', this._error);
+            throw new Error('[@BadUseFunction] to get the error use getErrorValue');
         }
         return this._value as T;
     }

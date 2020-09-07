@@ -8,7 +8,9 @@ import UseCaseError, { IUseCaseError } from "./core/UseCaseError";
 import getLogger from './infrastructure/logging';
 import InitiateDB from './config/databases';
 import App from './app';
-import UserRepository from './domain/repository/UserRepository'
+import UserRepository from './domain/repository/UserRepository';
+import { CreateUserUseCase } from './domain/useCases/CreateUserUseCase/CreateUserUseCase';
+import { CreateUserController } from './domain/useCases/CreateUserUseCase/CreateUserController';
 
 interface ICradle{    
     configuration: IEnvirementData,
@@ -17,8 +19,9 @@ interface ICradle{
     App: App,
     Response: Response,
     Result: Result<any>,
-    UseCaseError: UseCaseError,
-    UserRepos: UserRepository
+    UserRepos: UserRepository,
+    CreateUserUC: CreateUserUseCase,
+    CreateUserController: CreateUserController
 }    
 
 const IocContainer = createContainer<ICradle>({
@@ -33,8 +36,9 @@ IocContainer.register({
     App: asClass(App).singleton(),
     Response: asClass(Response).singleton(),
     Result: asClass(Result).singleton(),
-    UseCaseError: asClass(UseCaseError).singleton(),
     UserRepos: asClass(UserRepository).singleton(),
+    CreateUserUC: asClass(CreateUserUseCase).scoped(),
+    CreateUserController: asClass(CreateUserController).scoped()
 })
 
 

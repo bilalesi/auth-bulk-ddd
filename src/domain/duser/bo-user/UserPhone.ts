@@ -20,7 +20,7 @@ class UserPhone extends ValueObject<IUserPhone>{
     }
 
     public static build(props: IUserPhone): Result<UserPhone>{
-        if(this.isValidPhone(props.value))
+        if(!this.isValidPhone(props.value))
             return Result.opFail<UserPhone>('[@Phone] User phone not valid');
         return Result.opSuccess<UserPhone>(new UserPhone({
             value: props.value

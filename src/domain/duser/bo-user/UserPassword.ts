@@ -19,14 +19,14 @@ class UserPassword extends ValueObject<IUserPassword>{
     }
 
     get value(){
-        return this.props.value
+        return this.props.value;
     }
     private static isLegalPassword(props: IUserPassword): Result<UserPassword>{
         const isNullOrUndefined = Checker.NotNullOrUndefined(props.value);
         if(!isNullOrUndefined.valid)
             return Result.opFail<UserPassword>('[@Password] Password is null or undefined');
         
-            const isLengthAsRequired = props.value.length >= this.minLength
+        const isLengthAsRequired = props.value.length >= this.minLength
         if(!isLengthAsRequired)
             return Result.opFail<UserPassword>(`[@Password] Password must be at least ${this.minLength}`);
         
@@ -78,7 +78,11 @@ class UserPassword extends ValueObject<IUserPassword>{
         const { value, hashed } = props;
         const testResult = this.isLegalPassword(props);
         if(!testResult.isSuccess)
-            return Result.opFail<UserPassword>('[@Password] can not create password');
+            return Result.opFail<UserPassword>(testResult.getErrorValue());
+        
+        // if(!hashed){
+        //     return Result.opFail<UserPassword>('[@Password] Password Not yet Hashed');
+        // }
         
         return Result.opSuccess<UserPassword>(new UserPassword({ 
             value: props.value,

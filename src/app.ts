@@ -11,15 +11,18 @@ import { Logger } from 'winston';
 import InitiateDB from './config/databases';
 import mongoose from 'mongoose'
 import User from "./infrastructure/database/mongodb/UserModel";
+import CreateUserController from './domain/useCases/CreateUserUseCase/CreateUserController';
 
 class AppStarter{
 	private config: IEnvirementData;
 	private logger: Logger;
 	private dbify: InitiateDB;
-	constructor({ configuration, getLogger, InitiateDb }){
+	private cus: CreateUserController;
+	constructor({ configuration, getLogger, InitiateDb, CreateUserController }){
 		this.config = configuration;
 		this.logger = getLogger.logger();	
 		this.dbify = InitiateDb;
+		this.cus = CreateUserController;
 	}
 	public app_starter (){
 		const app = express();
@@ -44,26 +47,28 @@ class AppStarter{
 			write: (message) => { this.logger.info(message)}
 		}}));
 		this.dbify.configureDbAndLoad();
-		app.get('/', async (req, res, next) =>{
-			let user = new User({
-					firstname: 'bilal'
-				})
-			try {
-				// let gh = await User.findById('5f51f432ba088b39ad3a553c')
-				// console.log('+++++ gh', gh)
-				// let user1 = await User.findByIdAndUpdate('5f51f432ba088b39ad3a553c', { 'firstname' : "hello"}, { upsert: true})
-				let user1 = user.save()
-				console.log('user, ', user1)
-			} catch (error) {
-				console.log('----- error', error)
-			}
-			this.logger.error({
-				message: 'good working'
-			});
-			res.json({
-				'cool': 'hello world'
-			})
-		})
+		app.post('/post', (req, res) => this.cus.lunch(req, res))
+			// async (req, res, next) =>{
+			// 	let user = new User({
+			// 			firstname: 'bilal'
+			// 		})
+			// 	try {
+			// 		// let gh = await User.findById('5f51f432ba088b39ad3a553c')
+			// 		// console.log('+++++ gh', gh)
+			// 		// let user1 = await User.findByIdAndUpdate('5f51f432ba088b39ad3a553c', { 'firstname' : "hello"}, { upsert: true})
+			// 		let user1 = user.save()
+			// 		console.log('user, ', user1)
+			// 	} catch (error) {
+			// 		console.log('----- error', error)
+			// 	}
+			// 	this.logger.error({
+			// 		message: 'good working'
+			// 	});
+			// 	res.json({
+			// 		'cool': 'hello world'
+			// 	})
+			// }
+		// )
 		const serverPort = this.config.serverPort;
 		process.on('SIGINT', () => {
 			mongoose.connection.close(() => {				

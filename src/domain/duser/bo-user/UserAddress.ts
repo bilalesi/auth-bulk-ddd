@@ -26,7 +26,7 @@ class UserAddress extends ValueObject<IUserAddress>{
     }   
 
     public static build(props: IUserAddress): Result<UserAddress>{
-        if(this.isValidAdderss(props))
+        if(!this.isValidAdderss(props))
             return Result.opFail<UserAddress>('[@Address] State must be included in the address');
 
         return Result.opSuccess<UserAddress>(new UserAddress(props))

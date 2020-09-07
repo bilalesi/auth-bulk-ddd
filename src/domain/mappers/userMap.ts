@@ -20,15 +20,22 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
         if(!!user.password === true){
             if(!user.password.isAlreadyHashed())
                 password = user.password.value;
-            else
-                password = await user.password.getHashedValue();
+            else{
+                try {
+                    password = await user.password.getHashedValue();                    
+                } catch (error) {
+                    console.log('passworn can not be hashed, \n', error)
+                }
+            }
         }
 
         return{
+            username: user.username.value,
             firstname : user.firsName.Name,
             lastname : user.lastName.Name,
             address : user.address.value,
             phone: user.phone.value,
+            email: user.email.value,
             password : password,
             isEmailVerified : user.isEmailVerified,
             lastLogin : user.lastLogin.toDate(),

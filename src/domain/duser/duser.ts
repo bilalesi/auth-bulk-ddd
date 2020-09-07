@@ -15,13 +15,13 @@ export enum Role {
     ADMIN = 'ADMIN',
     USER = 'USER',
 }
-interface IUser{
+export interface IUser{
     username: UserName,
-    firstName: Name,
-    lastName: Name,
+    firstName?: Name,
+    lastName?: Name,
     email: UserEmail,
-    phone: UserPhone,
-    address: UserAddress,
+    phone?: UserPhone,
+    address?: UserAddress,
     password: UserPassword,
     isEmailVerified?: boolean,
     createdAt?: Moment,
@@ -54,6 +54,9 @@ class User extends Entity<IUser>{
     get phone(): UserPhone{
         return this.props.phone;
     }
+    get email(): UserEmail{
+        return this.props.email;
+    }
     get password(): UserPassword{
         return this.props.password;
     }
@@ -78,7 +81,7 @@ class User extends Entity<IUser>{
             props.address.value
         ])
         if(!isNotNullOrUndefined.valid)
-            return Result.opFail<User>('[@UserCreation] user cannot be created (null or undefined)');
+            return Result.opFail<User>('[@UserCreation] user cannot be created (null or undefined) values');
         
         const user = new User({
             ...props,
