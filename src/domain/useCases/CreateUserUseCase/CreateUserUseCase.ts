@@ -20,10 +20,10 @@ import AppError from '../../../core/AppError';
 import { CreateUserResponse } from './CreateUserResponse';
 
 
-export class CreateUserUseCase implements BaseUseCase<ICreateUserDto, CreateUserResponse> {
+export default class CreateUserUseCase implements BaseUseCase<ICreateUserDto, CreateUserResponse> {
     
     private userRepo: IUserRepository
-    constructor({ UserRepos }) {
+    constructor( { UserRepos } ) {
         this.userRepo = UserRepos;
     }
 
@@ -43,6 +43,7 @@ export class CreateUserUseCase implements BaseUseCase<ICreateUserDto, CreateUser
         ) : null;
         const userFirstNameOrError = request.firstname ? Name.build({ name: request.firstname }) : null
         const userLastNameOrError = request.lastname ? Name.build({ name: request.lastname }) : null
+        const socialAccount = request.socialAccount;
 
         let testRequest = Result.resultCombine([
             userNameOrError, userEmailOrError, userPhoneOrError, userPasswordOrError,
@@ -64,6 +65,7 @@ export class CreateUserUseCase implements BaseUseCase<ICreateUserDto, CreateUser
         try {
             if (userEmailOrError !== null) {
                 let isUserExists = await this.userRepo.existsWithEmail(userEmailOrError.getValue());
+                console.log('++++++ isUserExists', isUserExists)
                 if (isUserExists) {
                     return new CreateUserUseCaseErrors.UserWithEmailAlreadyExist(userEmail.value);
                 }
@@ -86,13 +88,19 @@ export class CreateUserUseCase implements BaseUseCase<ICreateUserDto, CreateUser
                 lastName: lastName,
                 phone: userPhone,
                 address: address,
-                role: Role.USER
+                role: Role.USER,
+                socialAccount: socialAccount
             })
 
-            await this.userRepo.save(user.getValue())
-            return Result.opSuccess<void>();
+            let userSaved = await this.userRepo.save(user.getValue())
+            console.log('======================================')
+            console.log('result test: ', userSaved)
+            console.log('======================================')
+
+            return Result.opSuccess<User>(userSaved) as Result<User>;
 
         } catch (error) {
+            console.log('errorr application', error)
             return new AppError.UnexpectedError(error);
         }
     }

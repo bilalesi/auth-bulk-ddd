@@ -4,6 +4,8 @@
  * the controller --> the useCase --> the repository 
  */
 
+import { ISocialAccount } from "../../duser/duser";
+
 export interface ICreateUserDto {
     username?: string,
     email?: string,
@@ -11,10 +13,11 @@ export interface ICreateUserDto {
     firstname: string,
     lastname: string,
 
-    state: string,
-    city: string,
-    local: string,
-    zip: number,
+    state?: string,
+    city?: string,
+    local?: string,
+    zip?: number,
 
-    password: string
+    password?: string,
+    socialAccount?: ISocialAccount
 }

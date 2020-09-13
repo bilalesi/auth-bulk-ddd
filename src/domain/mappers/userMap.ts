@@ -18,11 +18,15 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
     public static async toPersistence(user: User): Promise<any>{
         let password: string;
         if(!!user.password === true){
-            if(!user.password.isAlreadyHashed())
+            console.log('+++++++++++ user password exists')
+            if(user.password.isAlreadyHashed()){
+                console.log('+++++++++++ user password exists', user.password)
                 password = user.password.value;
+            }
             else{
                 try {
-                    password = await user.password.getHashedValue();                    
+                    password = await user.password.getHashedValue();  
+                    console.log('++++++++++++ password hashed: ', password)                  
                 } catch (error) {
                     console.log('passworn can not be hashed, \n', error)
                 }
@@ -37,7 +41,7 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             phone: user.phone.value,
             email: user.email.value,
             role: user.role,
-            password : password,         
+            password : password,
         }
     }
     public static toDto(user: User){
@@ -53,6 +57,7 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
         const addressOrError = UserAddress.build({ ...raw.address});
         const roleOrError = !!raw.role === true ? raw.role : Role.USER;
         const idOreError = UserID.build(raw._id as Identity);
+        
         let resultTest: Result<any> = Result.resultCombine([
             usernameOrError,
             firstnameOrError,
@@ -61,8 +66,9 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             phoneOrError,
             addressOrError,
             passwordOrError,
-            idOreError
+            idOreError,            
         ])
+       
         const userOrError = resultTest.isSuccess && User.build({
             username: usernameOrError.getValue(),
             firstName: firstnameOrError.getValue(),
@@ -74,9 +80,10 @@ class UserMap implements IMapper<UserDto, User, Promise<any>> {
             createdAt: moment(raw.created_at),
             modifiedAt: moment(raw.updated_at),
             password: passwordOrError.getValue(),
-            role: raw.role in Role ? raw.role : 'USER'
+            role: raw.role in Role ? raw.role : 'USER',
+            socialAccount: raw.socialAccount
         }, idOreError.getValue().id);
-        
+       
         return userOrError.isSuccess ? userOrError.getValue() : null
     }
 }

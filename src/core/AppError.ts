@@ -3,10 +3,11 @@ import BaseUseCaseError from "../infrastructure/useCases/BaseUseCaseError";
 
 namespace AppError{
     export class UnexpectedError extends Result<BaseUseCaseError>{
-        constructor(error?: any){
+        constructor(error?: any, loc?: string){
             super(false, {
                 message: `[@AppError] Unexpected error occured`,
-                error: error
+                error: error,
+                location: loc
             } as BaseUseCaseError)
         }
     }   

@@ -14,6 +14,8 @@ import userMap from '../mappers/userMap';
 import { IDeleteUserDto } from '../useCases/DeleteUserUseCase/DeleteUserDto';
 import Result from '../../core/Result';
 import { boolean } from 'yup';
+import UserMap from '../mappers/userMap';
+import { ICreateSocialUserDto } from './../useCases/CreateSocialUserUseCase/CreateSocialUserUseCase';
 
 
 // implements IUserRepository
@@ -66,19 +68,27 @@ class UserRepository implements IUserRepository {
             return false;
         }        
     };
-    getUserById(userId: UserID): Promise<User>{
-        return new Promise(async (resolve, reject) => {
-            try {
-                if(await this.existsWithId( userId )){
-                    let user = await MUser.findById(userId.id );
-                    resolve(UserMapper.toDomain(user));
-                }
-                    reject(null)
-            } catch (error) {
-                this.logger.debug('[@GET_USER_ID] get user by Id details not working correctly \n', error);
-                reject(null)
+    async existsSocialAccountByProvider(provider: string, id: string): Promise<boolean>{
+        try {
+            console.log('++++++++++++++++ user social from db +++++++++++++++',)
+            let user = await MUser.findOne({ "socialAccounts.provider": provider, "socialAccounts.socialId": id }).exec();
+            if(!!user === true) return !!user === true;
+            else return false;
+        } catch (error) {
+            this.logger.info(`[@SOCIAL${provider}_ERROR] getting user social details failed \n`, error);
+            return false;
+        }
+    }
+    async getUserById(userId: UserID): Promise<User>{
+        try {
+            if(await this.existsWithId( userId )){
+                let user = await MUser.findById(userId.id );
+                return (UserMapper.toDomain(user));
             }
-        })
+        } catch (error) {
+            this.logger.debug('[@GET_USER_ID] get user by Id details not working correctly \n', error);
+            return (null)
+        }
     };
     async getUserByUsername(username: UserName): Promise<User>{
         try {
@@ -98,22 +108,34 @@ class UserRepository implements IUserRepository {
             this.logger.debug('[@GET_USER_EMAIL] get user by username details not working correctly \n', error);
         }        
     };
-    async save(user: User): Promise<void>{
+    async getUserFacebookAccount(_id: string): Promise<User>{
+        try {
+            let raw = await MUser.findOne({
+                "socialAccounts.provider": { $eq: 'facebook' }
+            }).exec();
+            console.log('raw facebook:', raw);
+            if(!!raw === true)
+                return UserMapper.toDomain(raw);
+        } catch (error) {
+            this.logger.debug('[@GET_USER_FACEBOOK] get user facebook account details not working correctly \n', error);            
+        }
+    }
+    async save(user: User): Promise<User>{
         try {
             let exists = await this.existsWithEmail(user.email);
             console.log('saving: exists: ', exists)
             if(!exists){
                 let userToSaveMapped = await UserMapper.toPersistence(user);
                 let userDoc = new MUser(userToSaveMapped);
-                let userOrError = await userDoc.save();
+                let userSaved = await userDoc.save();
                 this.logger.info('[@SAVE_USER] user saved successfuly \n');
-            }
+                return UserMap.toDomain(userSaved);
+            }            
         } catch (error) {
             console.log('saving: Error catch: ', error)
             this.logger.warn('[@SAVE_USER] user already exists \n', error);
         }
     };
-
     async delete(props: IDeleteUserDto): Promise<FindAndModifyWriteOpResultObject<mongoose.Document> | boolean>{
         let { id, email, username } = props
         try {
@@ -154,6 +176,45 @@ class UserRepository implements IUserRepository {
             }
         } catch (error) {
             this.logger.info('[@DELETE_USER] User can not be Deleted \n', error);
+            return false;
+        }
+    }
+    async saveSocialAccount(user: ICreateSocialUserDto): Promise<mongoose.Document | boolean>{
+        let doc = {
+            username: user.username,
+            firstname: user.firstname ,
+            lastname: user.lastname ,
+            email: user.email ,
+            socialAccounts: [
+                user.social
+            ]
+        }
+        try {
+            let userDoc = new MUser(doc);
+            console.log('++++++++++++++++ user doc', userDoc)
+            let userToSave = await userDoc.save();
+            this.logger.info(`[@SOCIAL${user.social.provider}_SAVE_USER] user saved successfuly \n`);
+            return userToSave;
+        } catch (error) {
+            this.logger.warn(`[@SOCIAL_SAVE_USER] not saved \n`, error);
+            return false;
+        }
+    }
+    async updateSocialAccount(user: ICreateSocialUserDto): Promise<mongoose.Document | boolean>{
+        try {
+            let userToUpdate = await MUser.findOneAndUpdate({ email: user.email }, {
+                $push: {
+                    socialAccounts: user.social
+                }
+            }, {
+                new: true, 
+                upsert: true,
+                rawResult: true
+            })
+            this.logger.info('[@SAVE_USER] user updated successfuly \n');
+            return userToUpdate.value;
+        } catch (error) {
+            this.logger.warn('[@SAVE_SOCIAL_USER] user not updated \n');
             return false;
         }
     }

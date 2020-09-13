@@ -1,14 +1,16 @@
 import * as express from 'express';
 import dompurify from 'dompurify';
 import { BaseController } from '../../../infrastructure/useCases/BaseController';
-import { CreateUserUseCase } from './CreateUserUseCase';
+import CreateUserUseCase  from './CreateUserUseCase';
 import { ICreateUserDto } from './CreateUserDto';
 import { CreateUserResponse } from './CreateUserResponse';
 import CreateUserUseCaseErrors from './CreateUserErrors';
 import BaseUseCaseError from '../../../infrastructure/useCases/BaseUseCaseError';
+import Result from '../../../core/Result';
+import AppError from '../../../core/AppError';
 
  
-export class CreateUserController extends BaseController {
+class CreateUserController extends BaseController {
     private useCase: CreateUserUseCase;
     constructor({ CreateUserUC }) {
         super()
@@ -34,15 +36,17 @@ export class CreateUserController extends BaseController {
         try {
             let result: CreateUserResponse = await this.useCase.run(dto);
 
-            if (!result.isSuccess && result.getErrorValue() instanceof BaseUseCaseError) {
-                let gh = result.getErrorValue() as BaseUseCaseError;
+            if (!result.isSuccess) {
+                let gh = result as Result<BaseUseCaseError> ;
                 switch (gh.constructor) {
                     case CreateUserUseCaseErrors.UserWithEmailAlreadyExist:
                         return this.fail400(res, 409, 'Conflict, User Email Already Exist');
                     case CreateUserUseCaseErrors.UserWithUserNameAlreadyExist:
                         return this.fail400(res, 409, 'Conflict, User name Already Taken');
+                    case AppError.UnexpectedError:
+                        return this.fail400(res, 409, 'Conflict, Application Error');
                     default:
-                        return this.fail500(res, gh.message);
+                        return this.fail500(res, gh.getErrorValue() as Error);
                 }
             }
             else if(!result.isSuccess){

@@ -1,4 +1,3 @@
-import { Logger as ILogger } from "winston";
 import AppLogger from './Logger';
 
 function getLogger({ configuration }){  

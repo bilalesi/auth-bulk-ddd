@@ -10,10 +10,13 @@ import getLogger from './infrastructure/logging';
 import InitiateDB from './config/databases';
 import App from './app';
 import UserRepository from './domain/repository/UserRepository';
-import { CreateUserUseCase } from './domain/useCases/CreateUserUseCase/CreateUserUseCase';
-import { CreateUserController } from './domain/useCases/CreateUserUseCase/CreateUserController';
+import CreateUserUseCase from './domain/useCases/CreateUserUseCase/CreateUserUseCase';
+import CreateUserController from './domain/useCases/CreateUserUseCase/CreateUserController';
 import DeleteUserUseCase from "./domain/useCases/DeleteUserUseCase/DeleteUserUseCase";
 import DeleteUserController from './domain/useCases/DeleteUserUseCase/DeleteUserController';
+import FacebookStrategyAuthenticate from './domain/services/facebookStrategy';
+import GetUserByFacebookIDUseCase from "./domain/useCases/GetUserByFacebookIDUserCase/GetUserByFacebookIDUserCase";
+import CreateSocialUserUseCase from "./domain/useCases/CreateSocialUserUseCase/CreateSocialUserUseCase";
 
 interface ICradle{    
     configuration: IEnvirementData,
@@ -24,9 +27,12 @@ interface ICradle{
     Result: Result<any>,
     UserRepos: UserRepository,
     CreateUserUC: CreateUserUseCase,
+    CreateSocialUserUC: CreateSocialUserUseCase,
     DeleteUserUC: DeleteUserUseCase,
+    GetUserByFacebookIDUC: GetUserByFacebookIDUseCase
     CreateUserController: CreateUserController,
-    DeleteUserController: DeleteUserController
+    DeleteUserController: DeleteUserController,
+    FacebookStrategyAuthenticate: object
 }    
 
 const IocContainer = createContainer<ICradle>({
@@ -44,8 +50,11 @@ IocContainer.register({
     UserRepos: asClass(UserRepository).singleton(),
     CreateUserUC: asClass(CreateUserUseCase).scoped(),
     DeleteUserUC: asClass(DeleteUserUseCase).scoped(),
+    CreateSocialUserUC: asClass(CreateSocialUserUseCase).scoped(),
+    GetUserByFacebookIDUC: asClass(GetUserByFacebookIDUseCase).scoped(),
     CreateUserController: asClass(CreateUserController).scoped(),
     DeleteUserController: asClass(DeleteUserController).scoped(),
+    FacebookStrategyAuthenticate: asFunction(FacebookStrategyAuthenticate).singleton()
 })
 
 

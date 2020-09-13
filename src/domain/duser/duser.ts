@@ -15,6 +15,18 @@ export enum Role {
     ADMIN = 'ADMIN',
     USER = 'USER',
 }
+export interface ISocialAccount{
+    provider: string,
+    socialId: string,
+    localId?: UserID,
+    emails?: {
+        value: string;
+        type?: string;
+    }[],
+    Photos?: {
+        value: string;
+    }[]
+}
 export interface IUser{
     username: UserName,
     firstName?: Name,
@@ -22,12 +34,13 @@ export interface IUser{
     email: UserEmail,
     phone?: UserPhone,
     address?: UserAddress,
-    password: UserPassword,
+    password?: UserPassword,
     isEmailVerified?: boolean,
     createdAt?: Moment,
     modifiedAt?: Moment,
     lastLogin?: Moment,
-    role?: Role
+    role?: Role,
+    socialAccount?: ISocialAccount,
 }
 
 
@@ -56,6 +69,9 @@ class User extends Entity<IUser>{
     }
     get email(): UserEmail{
         return this.props.email;
+    }
+    get socialAccount(): ISocialAccount{
+        return this.props.socialAccount;
     }
     get password(): UserPassword{
         return this.props.password;
@@ -87,7 +103,7 @@ class User extends Entity<IUser>{
             ...props,
             isEmailVerified: props.isEmailVerified ? props.isEmailVerified : false,
             createdAt: props.createdAt ? props.createdAt : moment(),
-            role: props.role ? props.role : Role.USER
+            role: props.role ? props.role : Role.USER,              
         })
 
         // TODO event for creation the new user;

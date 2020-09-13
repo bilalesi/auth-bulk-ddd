@@ -31,7 +31,7 @@ class UserPassword extends ValueObject<IUserPassword>{
             return Result.opFail<UserPassword>(`[@Password] Password must be at least ${this.minLength}`);
         
         const isAlaphNumeric = Checker.IsAlphanumeric(props.value)
-        if(!isAlaphNumeric.valid)
+        if(!isAlaphNumeric.valid && !props.hashed)
             return Result.opFail<UserPassword>('[@Password] Passowrd mush have Alphanumeric caracters');
 
         return Result.opSuccess<UserPassword>(new UserPassword({

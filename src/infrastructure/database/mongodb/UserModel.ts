@@ -12,8 +12,13 @@ export const userSchema: mongoose.Schema = new mongoose.Schema({
                 return await yup.string().uuid().isValid(id);
             },
             message: (props) => `${props.value} _Id not valid`
-        }
+        },
+        required: true
     },
+    socialAccounts: [{
+        provider: { type: String },
+        socialId: { type: String },
+    }],
     username: {
         type: String,
         validate:{
@@ -22,8 +27,8 @@ export const userSchema: mongoose.Schema = new mongoose.Schema({
             },
             message: (props) => `${props.value} must be unique and at least ${2} an less than ${25}`
         }, 
-        required: [true, " username required"],
-        unique: true,
+        required: false,
+        // unique: true,
     },
     firstname: { type: String, },
     lastname: { type: String },
@@ -50,7 +55,7 @@ export const userSchema: mongoose.Schema = new mongoose.Schema({
             message: (props) => `${props.value} missing some required data 'state'`
         }
     },
-    password: { type: String, required: true },
+    password: { type: String, required: false },
     phone: { type: String,
         validate: {
             validator: async (value) => {
@@ -67,7 +72,7 @@ export const userSchema: mongoose.Schema = new mongoose.Schema({
     role: {
         type: String,
         enum: ['ADMIN', 'USER'],
-        required: true
+        required: false
     },
 
 }, {

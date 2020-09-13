@@ -10,8 +10,9 @@ interface IUserRepository{
     existsWithId(userId: UserID): Promise<boolean>;
     existsWithUsername(username: UserName): Promise<boolean>;
     getUserById(userId: UserID | string): Promise<User>;
+    getUserFacebookAccount(_id: string): Promise<User>;
     getUserByUsername(username: UserName | string): Promise<User>;
-    save(user: User): Promise<void>;
+    save(user: User): Promise<User>;
 }
 
 

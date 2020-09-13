@@ -3,4 +3,5 @@ require('dotenv').config();
 const server = container.resolve('App');
 
 
-server.app_starter().start();
+// server.app_starter().start();
+server.app_starter().startHttps();
