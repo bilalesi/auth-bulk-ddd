@@ -101,6 +101,7 @@ dist
 .dynamodb/
 # rethinkdb test db
 rethinkdb-data/
+mongo
 
 # TernJS port file
 .tern-port
